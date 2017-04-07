@@ -44,10 +44,10 @@ void listado(){
 	in=fopen("wav.lst","r");
 		
 	while(!feof(in)){
-			
+		
 		fscanf(in,"%s %s %d %d",artista,titulo,&min,&sec);
-		cancion n={titulo,min,sec,artista};
-
+		cancion n[x]={titulo,min,sec,artista};
+		x++;
 		
 	}
 		
