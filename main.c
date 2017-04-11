@@ -2,6 +2,7 @@
  * noisyCurses - main.c
  * 
  * Copyright 2017 Borregs <borregs@yopmail.com>
+ * Official Clone Repository: 'https://github.com/borregs/noisyCurses/'
  * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
