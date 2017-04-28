@@ -7,4 +7,4 @@
 # Mas info sobre el equalizzador libre cava: https://github.com/karlstav/cava/blob/master/README.md
 
 gnome-terminal -e "cava" --maximize
-gnome-terminal --maximize --command "./pepe" --active
+gnome-terminal --maximize --command "./noisy" --active
