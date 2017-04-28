@@ -2,7 +2,6 @@
  * noisyCurses - main.c
  * 
  * Copyright 2017 Borregs <borregs@yopmail.com>
- * Official Clone Repository: 'https://github.com/borregs/noisyCurses/'
  * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -40,11 +39,12 @@ typedef struct {
 } cancion;
 
 
-int fexists(char []);
+int fexists(char []); 
 
-void choices(WINDOW *m, int hl,cancion n[]);
+//void choices(WINDOW *m, int hl,cancion n[]);
 
 int nplaying(cancion);
+
 //cancion setCancion();
 
 //void guardarCancion(cancion,char []);
@@ -58,12 +58,14 @@ int main(int argc, char **argv)
 	WINDOW *w,*np,*ctrl;
 	int yy=0,xx=0;
 		
-	initscr();	
+	initscr();
 	
 	cbreak();
 	//noecho();
-	keypad(stdscr,1);
-	
+	keypad(stdscr,1);	
+
+	getch();
+
 	do{
 	clear();
 	
@@ -76,22 +78,17 @@ int main(int argc, char **argv)
 	np=subwin(stdscr,6,xx-8,yy-8,4);
 	box(np,0,0);
 	
-	ctrl=subwin(stdscr,yy/4,xx/2,25,40);
+	ctrl=subwin(stdscr,yy/4,xx/2,20,(xx/2)-20);
 	box(ctrl,0,0);
 	
 	mvwprintw(stdscr,0,xx/2-12,"NoisyCurses - By Borregs");
-	mvwprintw(np,0,4,"En Reproduccion:");
-	mvwprintw(ctrl,10,4,">");
-	mvwprintw(ctrl,9,4,">>");
+	mvwprintw(np,0,4,"En Reproduccion:" );
+	mvwprintw(ctrl,8,4,">");
+	mvwprintw(ctrl,7,4,">>");
 	mvwprintw(ctrl,1,2,"-| Ingresa Pista a Reproducir |-");
-
-
 	mvwaddstr(w,0,4, "Lista de Reproduccion:");
 
-
 	lector("wav.lst",w);
-	
-	
 	
 	}while(1);
 	endwin();
@@ -100,85 +97,102 @@ int main(int argc, char **argv)
 void lector(char arch[],WINDOW *m){
 	FILE *f;
 	WINDOW *opcion;
-	cancion n[5];
+	cancion n[7];
 	int np=0,hl=0,c=0,a=2,b=2,x=0,xx=0,yy=0;
 	char linea[1024],ch;
 	
 	getmaxyx(stdscr,yy,xx);
 	
-	if(fexists(arch))
-		f=fopen(arch,"r");
-	else{
-		perror("No existe el archivo");
+	if(fexists(arch))					
+		f=fopen(arch,"r");				//Si el archivo existe se abre para lectura
+	else{							//sino
+		perror("No existe el archivo");			//print Error o Imprime Eroor
 		return;
 	}
 	do{
 				
         fgets(n[x].a,sizeof(n[x].a),f);
         n[x].a[strlen(n[x].a)-1]='\0';
-		
+	//Se lee una linea del archivo de listado de canciones y se le assigna su valor a el artista 
+
 		if(feof(f))
 			break;
-			
+		        //Si ya se acabo el Archivo entonces break.	
+		
         fgets(n[x].al,sizeof(n[x].al),f);
         n[x].al[strlen(n[x].al)-1]='\0';		
-
+	//Se lee siguiente linea del archivo de listado de canciones  y se le assigna su valor a el album
+		
 		fgets(n[x].t,sizeof(n[x].t),f);
 		n[x].t[strlen(n[x].t)-1]='\0';
-
+		//Se lee siguiente linea del archivo de listado de canciones  y se le assigna su valor a el titulo. 
 		fgets(linea,sizeof(linea),f);
 		n[x].m=atoi(linea);
-
+		//Se lee siguiente linea del archivo como una palabra.
+		//Si la palabra contiene charecteres numericos los parsa a integros y se le assigna su valor a los minutos.
 
 		fgets(linea,sizeof(linea),f);
 		n[x].s=atoi(linea);		
+		//Se lee siguiente linea del archivo como una palabra.
+		//Si la palabra contiene charecteres numericos los parsa a integros y se le assigna su valor a los segundos.
 		
+		mvprintw(4+x,24-(strlen(n[x].t)/2),"%s",n[x].t);
+		mvprintw(4+x,52-(strlen(n[x].a)/2),"%s",n[x].a);
+		mvprintw(4+x,22+((xx/2)-(strlen(n[x].al)/2)),"%s",n[x].al);
 		mvprintw(4+x,7,"%d)",x+1);
-		mvprintw(4+x,24-(strlen(n[x].t)/2),"%s", n[x].t);
-		mvprintw(4+x,55-(strlen(n[x].a)/2),"%s",n[x].a);
-		mvprintw(4+x,10+((xx/2)-(strlen(n[x].al)/2)),"%s",n[x].al);
 		mvprintw(4+x,xx-12,"%d:%d",n[x].m,n[x].s);
-		
-		
+		//imprime el listado de canciones.
+
 		x++;
 		
 		}while(1);
 		
 		
 		mvprintw(23+yy/4,xx/2-29,"                             ");
-		mvscanw(23+yy/4,xx/2-29,"%d",&hl);
-		mvprintw(26,42,"-| Reproduciendo pista %d) |-            ",hl-1);
+		mvscanw(27,xx/2-13,"%d",&hl);
+		mvprintw(21,49,"-| Reproduciendo pista %d) |-            ",hl-1);
 		wattron(stdscr,A_REVERSE);
-		mvprintw(27,42,">>> %s - %s",n[hl-1].t,n[hl-1].a);
+		//Ncurses, esta funcion basicamente Prende.atributo(macro COLORES_INVERTIDOS).
+		//atributo inverso prendido para todo nuevo texto desplegado
+	
+		mvprintw(26,53,">>> %s - %s",n[hl-1].t,n[hl-1].a);
 		switch(hl){
 			case 1:
-				system("aplay 1.wav 2>log.txt &");
-				mvprintw(3+hl,xx-29,"*");
+				system("aplay 1.wav 2>>log.txt &");
+				mvprintw(3+hl,xx-18,"*");
 			break;
 			case 2:
-				system("aplay 2.wav 2>log.txt &");
-				mvprintw(3+hl,xx-29,"*");
+				system("aplay 2.wav 2>>log.txt &");
+				mvprintw(3+hl,xx-18,"*");
 			break;
 			case 3:
-				system("aplay 3.wav 2>log.txt &");
-				mvprintw(3+hl,xx-29,"*");
+				system("aplay 3.wav 2>>log.txt &");
+				mvprintw(3+hl,xx-18,"*");
 			break;
 			case 4:
-				system("aplay 4.wav 2>log.txt &");
-				mvprintw(3+hl,xx-29,"*");
+				system("aplay 4.wav 2>>log.txt &");
+				mvprintw(3+hl,xx-18,"*");
 			break;
 			case 5:
-				system("aplay 5.wav 2>log.txt &");
-				mvprintw(3+hl,xx-29,"*");
+				system("aplay 5.wav 2>>log.txt &");
+				mvprintw(3+hl,xx-18,"*");
+			break;
+			case 6:
+	                        system("aplay 6.wav 2>>log.txt &");
+                                mvprintw(3+hl,xx-18,"*");
+			break;
+			case 7:
+                                system("aplay 7.wav 2>>log.txt &");
+                                mvprintw(3+hl,xx-18,"*");
 			break;
 			}
-		
 		np=nplaying(n[hl-1]);
-		wattroff(stdscr,A_REVERSE);
+		wattroff(stdscr,A_REVERSE);//Ncurses, apagar atributo inverso.
 		
-		fclose(f);
+		fclose(f);//Cierra el archivo wav.lst
+
 	}
-int fexists(char archivo[])
+int fexists(char archivo[])//Si el archivo existe se abre para lectura, sino break
 {      
 	FILE *f = fopen(archivo, "r");
           if(f != NULL){
@@ -195,8 +209,7 @@ int nplaying(cancion np){
 	
 	getmaxyx(stdscr,yy,xx);
 	wrefresh(stdscr);
-	
-	
+		
 	for(x=0;x<=np.m;x++){
 		for(y=0;y<60;y++){
 			if(y>9)
@@ -211,7 +224,8 @@ int nplaying(cancion np){
 			l=((np.m*60)+np.s);
 			m=((x*60)+y);
 			uo=((m*100)/l)/1.00;
-			
+			//usando los segundos pasados y la duracion de la cancion determina el porcentaje. 
+		
 			mvprintw(yy-6,9+uo,"=");
 			if(uo)
 			mvprintw(yy-6,8+uo,"=");
@@ -220,7 +234,7 @@ int nplaying(cancion np){
 			mvprintw(yy-5,8,"%s - %s",np.t,np.a);
 			else
 			mvprintw(yy-5,8,"    %s       ",np.al);
-			system("sleep 1");
+			system("sleep 1");//espera un segundo...
 			refresh();
 			if(y==np.s&&x==np.m)
 				break;
@@ -229,20 +243,4 @@ int nplaying(cancion np){
 	
 	return 0;
 	
-	}
-void choices(WINDOW *m, int hl,cancion n[]){
-	
-	int a=2,b=2,x;
-	box(m,0,0);
-	
-	for(x=0;x<4;x++){
-		if(hl==x+1){
-			wattron(m,A_REVERSE);
-			mvwprintw(m,b,a,"%s",n[x+1].t);
-			wattroff(m,A_REVERSE);
-			}
-		else
-			mvwprintw(m,b,a,"%s",n[x+1].t);
-		b++;}
-	wrefresh(m);
 	}
