@@ -1,4 +1,5 @@
-*
+/*
+ *
  * noisyCurses - main.c
  * 
  * Copyright 2017 Borregs <borregs@yopmail.com>
