@@ -1,10 +1,14 @@
-CC=gcc
-CFLAGS=-std=c99 -t
-LFLAGS=-lncurses -lm
+#Makefile borregs
+IN=main.c
+DEPS=global.h nplaying.h aplayer.h lector.h
+LFLAGS=-lm -lncurses
+CFLAGS=-t -std=c99
 OUT=noisy
 
-$(OUT): main.c
-	$(CC) -o $@ $^ $(CFLAGS) $(LFLAGS)
+$(OUT) : $(IN) $(DEPS)
+	gcc -o $@ $(CFLAGS) $^ $(LFLAGS) && sleep 2 &&echo "[...] Everithing is OK"
 
-clean:
-rm *.o *~ $(OUT)
+clean: 
+	rm $(OUT)&&ls -l *.lst *.wav *.log &&echo "Data Files Were not Deleted"
+	
+#
