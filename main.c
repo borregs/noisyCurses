@@ -48,25 +48,27 @@ int main(int argc, char **argv)
 	
 	cbreak();
 	//noecho();
-	keypad(stdscr,1);	
-	nodelay(stdscr,TRUE);
+	keypad(stdscr,1);	//Le damos funcionalidad a las teclas especiales en stdscr. 
+				//Ahora se pude interpretar el enter y las flechas como un solo carracter tipo char. 
+	nodelay(stdscr,TRUE);   //Los getch no esperaran enter para continuar y reciviran valor de "NULL" si nada fue ingresado
 	getch();
 
 	do{
 	clear();
 	
-	getmaxyx(stdscr,yy,xx);
-	box(stdscr,'*','*');
+	getmaxyx(stdscr,yy,xx); //obtenemos la actual dimension de la terminal y guardamos geometria en variables xx y yy
+	box(stdscr,'*','*');	//cajita a stdscr
 	
-	w=subwin(stdscr,yy-10,xx-8,2,4);
-	box(w,0,0);
+	w=subwin(stdscr,yy-10,xx-8,2,4);  //creamos la sub-ventana w dentro de stdscr
+	box(w,0,0);			  //cajita a w
 	
-	np=subwin(stdscr,7,xx-8,yy-8,4);
-	box(np,0,0);
+	np=subwin(stdscr,7,xx-8,yy-8,4);  //creamos la sub-ventana np dentro de stdscr
+	box(np,0,0);			  //cajita a np
 	
-	ctrl=subwin(stdscr,yy/4,xx/2,yy/2,((xx/2)-(xx/4)));
-	box(ctrl,0,0);
+	ctrl=subwin(stdscr,yy/4,xx/2,yy/2,((xx/2)-(xx/4))); //creamos la sub-ventana ctrl dentro de stdscr
+	box(ctrl,0,0);					    //cajita a ctrl
 	
+	//Titulo a las cajas y menus.
 	mvwprintw(stdscr,0,xx/2-12,"NoisyCurses - By Borregs");
 	mvwprintw(np,0,4,"En Reproduccion:" );
 	mvwprintw(ctrl,8,4,">");
@@ -74,7 +76,7 @@ int main(int argc, char **argv)
 	mvwprintw(ctrl,1,2,"-| Ingresa Pista a Reproducir |-");
 	mvwaddstr(w,0,4, "Lista de Reproduccion:");
 
-	lector("wav.lst",ctrl,np,w);
+	lector("wav.lst",ctrl,np,w); // lector lee achivo lista y captura opcion d usuario
 	
 	}while(1);
 	endwin();
