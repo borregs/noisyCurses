@@ -1,7 +1,7 @@
 /*
  * noisyCurses - main.c
  * 
- * Copyright 2017 Borregs <borregs@yopmail.com>
+ * Copyright 2017 Borregs <borregs@yopmail.com
  * PE - UABC - 01122832
  *
  * This program is free software; you can redistribute it and/or modify
@@ -47,10 +47,9 @@ int main(int argc, char **argv)
 	initscr();
 	
 	cbreak();
-	//noecho();
-	keypad(stdscr,1);	//Le damos funcionalidad a las teclas especiales en stdscr. 
-				//Ahora se pude interpretar el enter y las flechas como un solo carracter tipo char. 
-	nodelay(stdscr,TRUE);   //Los getch no esperaran enter para continuar y reciviran valor de "NULL" si nada fue ingresado
+	keypad(stdscr,1);	
+
+	system("sleep 1");
 	getch();
 
 	do{
@@ -62,6 +61,7 @@ int main(int argc, char **argv)
 	w=subwin(stdscr,yy-10,xx-8,2,4);  //creamos la sub-ventana w dentro de stdscr
 	box(w,0,0);			  //cajita a w
 	
+
 	np=subwin(stdscr,7,xx-8,yy-8,4);  //creamos la sub-ventana np dentro de stdscr
 	box(np,0,0);			  //cajita a np
 	
@@ -75,6 +75,7 @@ int main(int argc, char **argv)
 	mvwprintw(ctrl,7,4,">>");
 	mvwprintw(ctrl,1,2,"-| Ingresa Pista a Reproducir |-");
 	mvwaddstr(w,0,4, "Lista de Reproduccion:");
+
 
 	lector("wav.lst",ctrl,np,w); // lector lee achivo lista y captura opcion d usuario
 	
