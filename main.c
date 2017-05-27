@@ -1,8 +1,9 @@
 /*
  * noisyCurses - main.c
  * 
- * Copyright 2017 Borregs <borregs@yopmail.com>
- * 
+ * Copyright 2017 Borregs <borregs@yopmail.com
+ * PE - UABC - 01122832
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -46,27 +47,28 @@ int main(int argc, char **argv)
 	initscr();
 	
 	cbreak();
-	//noecho();
 	keypad(stdscr,1);	
-	//nodelay(stdscr,TRUE);
-//	getch();
+
 	system("sleep 1");
 	getch();
+
 	do{
 	clear();
 	
-	getmaxyx(stdscr,yy,xx);
-	box(stdscr,'*','*');
+	getmaxyx(stdscr,yy,xx); //obtenemos la actual dimension de la terminal y guardamos geometria en variables xx y yy
+	box(stdscr,'*','*');	//cajita a stdscr
 	
-	w=subwin(stdscr,yy-10,xx-8,2,4);
-	box(w,0,0);
+	w=subwin(stdscr,yy-10,xx-8,2,4);  //creamos la sub-ventana w dentro de stdscr
+	box(w,0,0);			  //cajita a w
 	
-	np=subwin(stdscr,7,xx-8,yy-8,4);
-	box(np,0,0);
+
+	np=subwin(stdscr,7,xx-8,yy-8,4);  //creamos la sub-ventana np dentro de stdscr
+	box(np,0,0);			  //cajita a np
 	
-	ctrl=subwin(stdscr,yy/4,xx/2,yy/2,((xx/2)-(xx/4)));
-	box(ctrl,0,0);
+	ctrl=subwin(stdscr,yy/4,xx/2,yy/2,((xx/2)-(xx/4))); //creamos la sub-ventana ctrl dentro de stdscr
+	box(ctrl,0,0);					    //cajita a ctrl
 	
+	//Titulo a las cajas y menus.
 	mvwprintw(stdscr,0,xx/2-12,"NoisyCurses - By Borregs");
 	mvwprintw(np,0,4,"En Reproduccion:" );
 	mvwprintw(ctrl,8,4,">");
@@ -74,7 +76,8 @@ int main(int argc, char **argv)
 	mvwprintw(ctrl,1,2,"-| Ingresa Pista a Reproducir |-");
 	mvwaddstr(w,0,4, "Lista de Reproduccion:");
 
-	lector("wav.lst",ctrl,np,w);
+
+	lector("wav.lst",ctrl,np,w); // lector lee achivo lista y captura opcion d usuario
 	
 	}while(1);
 	endwin();
