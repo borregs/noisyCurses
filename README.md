@@ -1,7 +1,9 @@
 
 # noisyCurses - Version Dependiente
+![alt text](https://borregs.github.io/Web3CV/about/noisyCurses.png "Noisy Curses + CAVA")
 
-repruductor de archivos  *.wav con interfaz grafica en ncurses.
+
+<p style="text-align: center"> Repruductor Multimedia con interfaz grafica en ncurses.</p>
 
 # Archivos:
 #para descomprimir 
